@@ -28,7 +28,10 @@ class User(
 	@Column
 	var avatar: String = "",
 
-	) : UserDetails {
+	@Column
+	val dateCreated: Long,
+
+) : UserDetails {
 
 	override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
 		mutableListOf(SimpleGrantedAuthority(role.name))

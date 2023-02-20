@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import javax.sound.midi.SysexMessage
 
 @Service
 class AuthenticationService(
@@ -22,13 +23,15 @@ class AuthenticationService(
 ) {
 
 	fun authenticate(request: AuthenticationRequest): AuthenticationResponse {
+		val user = repository.findByUsername(request.username) ?: throw UsernameNotFoundException("User '${request.username}' Does Not Exist! D:")
+
 		authenticationManager.authenticate(
 			UsernamePasswordAuthenticationToken(
 				request.username,
-				request.password,
+				request.password + user.dateCreated,
 			)
 		)
-		val user = repository.findByUsername(request.username) ?: throw UsernameNotFoundException("User '${request.username}' Does Not Exist! D:")
+
 		val jwtToken = jwtService.generateToken(user)
 		return AuthenticationResponse(jwtToken)
 	}
@@ -38,12 +41,15 @@ class AuthenticationService(
 			throw Exception()
 		}
 
+		val time = System.currentTimeMillis()
+
 		val user = User(
 			null,
 			if (asAdmin) UserRole.ADMIN
 			else UserRole.USER,
 			request.username,
-			encoder.encode(request.password)
+			encoder.encode(request.password + time),
+			dateCreated = time,
 		)
 		repository.save(user)
 		val jwtToken = jwtService.generateToken(user)

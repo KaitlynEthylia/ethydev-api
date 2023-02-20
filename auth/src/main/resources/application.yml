@@ -3,6 +3,7 @@ server:
     ${AUTH_PORT}
 
 admin-key: ${AUTH_ADMIN_KEY}
+secret-key: ${COMMON_SECRET_KEY}
 
 spring:
   application:
