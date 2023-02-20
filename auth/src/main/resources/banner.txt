@@ -1,0 +1,10 @@
+   __   ___        _   _      __
+  / /  / _ \      | | | |     \ \
+ / /  / /_\ \_   _| |_| |__    \ \
+< <   |  _  | | | | __| '_ \    > >
+ \ \  | | | | |_| | |_| | | |  / /
+  \_\ \_| |_/\__,_|\__|_| |_| /_/
+
+
+${application.title} ${application.version}
+Running on Spring Boot ${spring-boot.version}

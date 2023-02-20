@@ -1,0 +1,48 @@
+version: '3'
+services:
+  auth:
+    container_name: auth
+    build:
+      context: auth
+      dockerfile: Dockerfile
+    image: auth:latest
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+
+  lynx:
+    container_name: lynx
+    build:
+      context: lynx
+      dockerfile: Dockerfile
+    image: lynx:latest
+    ports:
+      - "8082:8082"
+    env_file:
+      - .env
+
+  blog:
+    container_name: blog
+    build:
+      context: blog
+      dockerfile: Dockerfile
+    image: blog:latest
+    ports:
+      - "8083:8083"
+    env_file:
+      - .env
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    env_file:
+      - .env.docker
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres:
+    driver: local
